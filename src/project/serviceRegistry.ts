@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 
 import { IServiceManager } from '../ioc/types';
-import { CommandHandler } from './command';
+import { ProjectCommand } from './command';
 import { Project } from './project';
-import { ICommandHandler, IProject } from './types';
+import { IProject, IProjectCommand } from './types';
 
 export function registerTypes(serviceManager: IServiceManager) {
-    serviceManager.addSingleton<ICommandHandler>(ICommandHandler, CommandHandler);
+    serviceManager.addSingleton<IProjectCommand>(IProjectCommand, ProjectCommand);
     serviceManager.addSingleton<IProject>(IProject, Project);
 }

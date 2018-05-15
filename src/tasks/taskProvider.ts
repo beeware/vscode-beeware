@@ -1,17 +1,17 @@
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { EOL } from 'os';
 import { OutputChannel, ProgressLocation, Uri } from 'vscode';
-import { IApplicationShell, ICommandManager, IWorkspaceService } from '../common/application/types';
+import { IApplicationShell, IWorkspaceService } from '../common/application/types';
 import { IConfigurationService } from '../common/configuration/types';
 import { ApplicationName } from '../common/constants';
 import { IModuleInstaller, IProcessServiceFactory } from '../common/process/types';
 import { ILogger, IOutputChannel } from '../common/types';
 import { IServiceContainer } from '../ioc/types';
 import { BeeWareExecutionHelper } from './helper';
-import { ITaskProvider } from './types';
+import { ITaskProvider, Target } from './types';
 
+@injectable()
 export class BulidRunTaskProvider implements ITaskProvider {
-    private readonly commandManager: ICommandManager;
     private readonly outputChannel: OutputChannel;
     private readonly processExecutionFactory: IProcessServiceFactory;
     private readonly workspaceService: IWorkspaceService;
@@ -20,7 +20,6 @@ export class BulidRunTaskProvider implements ITaskProvider {
     private readonly shell: IApplicationShell;
     private readonly moduleInstaller: IModuleInstaller;
     constructor(@inject(IServiceContainer) serviceContainer: IServiceContainer) {
-        this.commandManager = serviceContainer.get<ICommandManager>(ICommandManager);
         this.logger = serviceContainer.get<ILogger>(ILogger);
         this.outputChannel = serviceContainer.get<OutputChannel>(IOutputChannel);
         this.processExecutionFactory = serviceContainer.get<IProcessServiceFactory>(IProcessServiceFactory);
@@ -30,23 +29,13 @@ export class BulidRunTaskProvider implements ITaskProvider {
         this.moduleInstaller = serviceContainer.get<IModuleInstaller>(IModuleInstaller);
     }
 
-    public async initialize() {
-        const items = [
-            { command: 'beeware.buildWindows', target: 'windows', isBuild: true },
-            { command: 'beeware.buildMac', target: 'macos', isBuild: true },
-            { command: 'beeware.buildLinux', target: 'linux', isBuild: true },
-            { command: 'beeware.buildIOS', target: 'ios', isBuild: true },
-            { command: 'beeware.buildAndroid', target: 'android', isBuild: true },
-            { command: 'beeware.runWindows', target: 'windows', isBuild: false },
-            { command: 'beeware.runMac', target: 'macos', isBuild: false },
-            { command: 'beeware.runLinux', target: 'linux', isBuild: false },
-            { command: 'beeware.runIOS', target: 'ios', isBuild: false },
-            { command: 'beeware.runAndroid', target: 'android', isBuild: false }
-        ];
-
-        items.forEach(item => this.commandManager.registerCommand(item.command, () => this.buildHandler(item.isBuild ? 'build' : 'run', item.target)));
+    public async build(target: Target): Promise<void> {
+        this.buildHandler('build', target);
     }
-    private async buildHandler(buildOrRun: 'build' | 'run', target: string): Promise<void> {
+    public async run(target: Target): Promise<void> {
+        this.buildHandler('run', target);
+    }
+    private async buildHandler(buildOrRun: 'build' | 'run', target: Target): Promise<void> {
         this.logger.info(EOL);
         this.logger.info(`${buildOrRun ? 'Build' : 'Run'} '${target}'`);
         const workspaceFolder = await this.workspaceService.selectWorkspaceFolder();
@@ -64,8 +53,9 @@ export class BulidRunTaskProvider implements ITaskProvider {
 
         const title = `${buildOrRun ? 'Building' : 'Running'} ${ApplicationName} on ${target}`;
         const options = { location: ProgressLocation.Notification, title, cancellable: true };
+        this.outputChannel.show();
         this.shell.withProgress(options, (_, token) => new Promise((resolve, reject) => {
-            const cmd = buildOrRun ? 'build' : 'run';
+            const cmd = buildOrRun === 'build' ? 'build' : 'run';
             const args = [...executionInfo.args, cmd, target];
             const output = executionService.execObservable(executionInfo.command, args, { cwd: workspaceFolder.uri.fsPath, token });
             output.out.subscribe(item => {
@@ -87,7 +77,7 @@ export class BulidRunTaskProvider implements ITaskProvider {
         this.logger.info(`Checking if module '${moduleName}' is installed.`);
         const cookieCutterIsInstalled = await this.moduleInstaller.isInstalled(moduleName, workspaceFolder);
         if (!cookieCutterIsInstalled) {
-            const result = await this.shell.showInformationMessage(`Module '${moduleName}' not installed, would you like to install it?`, 'Install');
+            const result = await this.shell.showInformationMessage(`Module '${moduleName}' not installed, would you like to install it?`, 'Install', 'Cancel');
             if (result !== 'Install') {
                 return false;
             }

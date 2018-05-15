@@ -37,7 +37,7 @@ export class VariablesService implements IVariableService {
             }
             const keyValue = definitions[key];
             try {
-                variables[key] = await this.getUserValue(key, keyValue);
+                variables[key] = await this.getUserValue(key, keyValue, token);
             } catch (ex) {
                 this.logger.error(`Error in generating variable for '${key}'`, ex);
             }
@@ -61,7 +61,7 @@ export class VariablesService implements IVariableService {
             .map((item, index) => index === 0 && item.length > 0 ? `${item.substring(0, 1).toUpperCase()}${item.substring(1)}` : item)
             .join(' ');
     }
-    private async getUserValue(key: string, keyValue: string | string[]) {
+    private async getUserValue(key: string, keyValue: string | string[], token?: CancellationToken) {
         // If the key is using existing variables, then do not display a prompt.
         if (typeof keyValue === 'string' && keyValue.indexOf('{{') >= 0) {
             return keyValue;
@@ -70,22 +70,22 @@ export class VariablesService implements IVariableService {
         const variableType = this.getVariableType(keyValue);
         switch (variableType) {
             case VariableType.yesno: {
-                const value = await this.ui.selectYesNo(displayName, keyValue === 'y');
+                const value = await this.ui.selectYesNo(displayName, keyValue === 'y', token);
                 return value ? 'y' : 'n';
             }
             case VariableType.choise: {
                 const options = keyValue as string[];
-                return this.ui.selectOption(displayName, options[0], options);
+                return this.ui.selectOption(displayName, options[0], options, token);
             }
             default: {
-                return this.ui.provideValue(`Provide a value for '${displayName}'`, keyValue as string);
+                return this.ui.provideValue(`Provide a value for '${displayName}'`, keyValue as string, token);
             }
         }
     }
     private getVariableType(value: string | string[]): VariableType {
         if (Array.isArray(value)) {
             return VariableType.choise;
-        } else if (value === 'y' || value === 'n') {
+        } else if (['yes', 'no', 'y', 'n', 'true', 'false', '1', '0'].indexOf(value) >= 0) {
             return VariableType.yesno;
         } else {
             return VariableType.value;

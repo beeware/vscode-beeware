@@ -6,8 +6,8 @@ export interface IProject {
     create(workspaceFolder: Uri): Promise<void>;
 }
 
-export const ICommandHandler = Symbol('ICommandHandler');
+export const IProjectCommand = Symbol('IProjectCommand');
 
-export interface ICommandHandler {
+export interface IProjectCommand {
     register(): void;
 }

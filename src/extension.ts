@@ -19,8 +19,9 @@ import { ServiceContainer } from './ioc/container';
 import { ServiceManager } from './ioc/serviceManager';
 import { IServiceContainer } from './ioc/types';
 import { registerTypes as projectRegisterTypes } from './project/serviceRegistry';
-import { ICommandHandler } from './project/types';
+import { IProjectCommand } from './project/types';
 import { registerTypes as taskRegisterTypes } from './tasks/serviceRegistry';
+import { ITaskCommands } from './tasks/types';
 import { registerTypes as templatesRegisterTypes } from './templates/serviceRegistry';
 
 export function activate(context: ExtensionContext) {
@@ -49,5 +50,6 @@ function registerServices(context: ExtensionContext, serviceManager: ServiceMana
 }
 
 function initialize(serviceContainer: ServiceContainer) {
-    serviceContainer.get<ICommandHandler>(ICommandHandler).register();
+    serviceContainer.get<IProjectCommand>(IProjectCommand).register();
+    serviceContainer.get<ITaskCommands>(ITaskCommands).register();
 }

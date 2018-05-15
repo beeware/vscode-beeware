@@ -22,21 +22,19 @@ export class ModuleInstaller implements IModuleInstaller {
     }
     public async install(moduleName: string, workspaceFolder: Uri, targetDirectory?: string): Promise<boolean> {
         const executionService = await this.pythonExecServieFactory.create({ resource: workspaceFolder });
+        const destinationMessage = targetDirectory ? ` into ${targetDirectory}` : '';
         try {
-            this.logger.info(`Installing module '${moduleName}' into ${targetDirectory}`);
+            this.logger.info(`Installing module '${moduleName}'${destinationMessage}`);
             const installDirArgs = targetDirectory ? ['-t', targetDirectory.fileToCommandArgument()] : [];
             const cacheArgs = targetDirectory ? ['--no-cache-dir'] : [];
             const args = ['-m', 'pip', 'install', ...installDirArgs, moduleName, ...cacheArgs];
             await executionService.exec(args, { throwOnStdErr: true });
             return true;
         } catch (ex) {
-            const targetDirMessage = targetDirectory ? `into the path ${targetDirectory}` : '';
-            const message = `Failed to install '${moduleName}'${targetDirMessage}, please install manually.`;
+            const message = `Failed to install '${moduleName}'${destinationMessage}, please install manually.`;
             this.logger.error(message, ex);
             this.shell.showErrorMessage(message);
             return false;
         }
     }
-
-
 }

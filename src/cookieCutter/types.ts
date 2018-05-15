@@ -40,7 +40,7 @@ export interface ICookiecutter {
 export const IUi = Symbol('IUi');
 
 export interface IUi {
-    selectOption(description: string, defaultValue: string, options: string[]): Promise<string>;
-    selectYesNo(description: string, defaultValue: boolean): Promise<boolean>;
-    provideValue(description: string, defaultValue: string): Promise<string>;
+    selectOption(description: string, defaultValue: string, options: string[], token?: CancellationToken): Promise<string>;
+    selectYesNo(description: string, defaultValue: boolean, token?: CancellationToken): Promise<boolean>;
+    provideValue(description: string, defaultValue: string, token?: CancellationToken): Promise<string>;
 }
