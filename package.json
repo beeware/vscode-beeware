@@ -5,6 +5,10 @@
     "version": "0.0.1",
     "publisher": "BeeWare",
     "icon": "icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/pybee/vscode-beeware"
+    },
     "engines": {
         "vscode": "^1.23.0"
     },

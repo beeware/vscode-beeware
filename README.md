@@ -25,4 +25,4 @@ Write your apps in Python and release them on iOS, Android, Windows, MacOS, Linu
 * Select the command `BeeWare: Build <target>` to build a platform specific build output
 * Or Select the commmand `BeeWare: Run <target>` to run the platform specific project
 
-![Demo](https://raw.githubusercontent.com/DonJayamanne/vscode-beeware/master/images/demo.gif)
+![Demo](https://raw.githubusercontent.com/pybee/vscode-beeware/master/images/demo.gif)
