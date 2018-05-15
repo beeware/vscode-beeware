@@ -1,0 +1,22 @@
+{
+    "app_name": "appname",
+    "formal_name": "App Name",
+    "description": "An app that does lots of stuff",
+    "author": "Jane Developer",
+    "author_email": "jane@example.com",
+    "bundle": "com.example",
+    "license": [
+        "BSD license",
+        "MIT license",
+        "Apache Software License",
+        "GNU General Public License v2 (GPLv2)",
+        "GNU General Public License v2 or later (GPLv2+)",
+        "GNU General Public License v3 (GPLv3)",
+        "GNU General Public License v3 or later (GPLv3+)",
+        "Other"
+    ],
+    "gui_framework": [
+        "Toga",
+        "None"
+    ]
+}
