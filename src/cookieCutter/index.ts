@@ -65,7 +65,7 @@ export class CookieCutter implements ICookiecutter {
             const file = path.join(ExtensionRootDirectory, 'python_files', 'generate_cookiecutter.py');
             const settings = this.configurationService.getSettings(workspaceFolder);
             const args = { template_git_repo: settings.cookiecutterTemplateRepoUrl, variables };
-            const PYTHONPATH = path.join(ExtensionRootDirectory, 'python_files');
+            const PYTHONPATH = path.join(ExtensionRootDirectory, 'python_files', 'packages');
             const processEnv = this.currentProcess.env;
             await executionService.exec([file, JSON.stringify(args)], { cwd: workspaceFolder.fsPath, env: { PYTHONPATH, ...processEnv }, throwOnStdErr: true });
         } catch (ex) {

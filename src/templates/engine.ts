@@ -36,7 +36,7 @@ export class TemplateEngine implements ITemplateEngine {
             this.executionService.set(workspaceFolder.fsPath, await this.executionServiceFactory.create({ resource: workspaceFolder }));
         }
         const executionService = this.executionService.get(workspaceFolder.fsPath)!;
-        const PYTHONPATH = path.join(ExtensionRootDirectory, 'python_files');
+        const PYTHONPATH = path.join(ExtensionRootDirectory, 'python_files', 'packages');
         const file = path.join(ExtensionRootDirectory, 'python_files', 'render_template.py');
         // When using templates within variable, we look for items prefixed with `cookiecutter.`
         // This will be used when rendering the templates

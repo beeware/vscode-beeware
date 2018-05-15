@@ -38,7 +38,7 @@ export class Installer implements IInstaller {
     }
 
     private async installModule(moduleName: string, workspaceFolder: Uri): Promise<boolean> {
-        const targetDirectory = path.join(ExtensionRootDirectory, 'python_files');
+        const targetDirectory = path.join(ExtensionRootDirectory, 'python_files', 'packages');
         return this.moduleInstaller.install(moduleName, workspaceFolder, targetDirectory);
     }
 }
