@@ -5,9 +5,16 @@
     "version": "0.0.1",
     "publisher": "BeeWare",
     "icon": "icon.png",
+    "author": {
+        "name": "BeeWare"
+    },
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/pybee/vscode-beeware"
+    },
+    "bugs": {
+        "url": "https://github.com/pybee/vscode-beeware/issues"
     },
     "engines": {
         "vscode": "^1.23.0"
