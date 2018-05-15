@@ -9,6 +9,7 @@
         "name": "BeeWare"
     },
     "license": "MIT",
+    "homepage": "https://pybee.org/",
     "repository": {
         "type": "git",
         "url": "https://github.com/pybee/vscode-beeware"
