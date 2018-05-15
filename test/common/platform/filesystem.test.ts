@@ -1,12 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { expect } from 'chai';
+import { expect, use } from 'chai';
+import * as chaiAsPromised from 'chai-as-promised';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as TypeMoq from 'typemoq';
 import { FileSystem } from '../../../src/common/platform/fileSystem';
 import { IFileSystem, IPlatformService } from '../../../src/common/platform/types';
+
+use(chaiAsPromised);
 
 // tslint:disable-next-line:max-func-body-length
 suite('FileSystem', () => {

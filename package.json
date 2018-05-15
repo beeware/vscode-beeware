@@ -1,6 +1,6 @@
 {
     "name": "beeware",
-    "displayName": "vscode-beeware",
+    "displayName": "BeeWare for Visual Studio Code",
     "description": "BeeWare",
     "version": "0.0.1",
     "publisher": "BeeWare",
@@ -16,11 +16,11 @@
         "beeware"
     ],
     "galleryBanner": {
-        "color": "yellow",
+        "color": "#F8D047",
         "theme": "light"
     },
     "categories": [
-        "Other",
+        "Other"
     ],
     "activationEvents": [
         "*",
