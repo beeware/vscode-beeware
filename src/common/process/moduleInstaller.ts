@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { Uri } from 'vscode';
+import { ProgressLocation, Uri } from 'vscode';
 import { IServiceContainer } from '../../ioc/types';
 import { IApplicationShell } from '../application/types';
 import { ILogger } from '../types';
@@ -21,20 +21,24 @@ export class ModuleInstaller implements IModuleInstaller {
         return service.isModuleInstalled(moduleName);
     }
     public async install(moduleName: string, workspaceFolder: Uri, targetDirectory?: string): Promise<boolean> {
-        const executionService = await this.pythonExecServieFactory.create({ resource: workspaceFolder });
-        const destinationMessage = targetDirectory ? ` into ${targetDirectory}` : '';
-        try {
-            this.logger.info(`Installing module '${moduleName}'${destinationMessage}`);
-            const installDirArgs = targetDirectory ? ['-t', targetDirectory.fileToCommandArgument()] : [];
-            const cacheArgs = targetDirectory ? ['--no-cache-dir'] : [];
-            const args = ['-m', 'pip', 'install', ...installDirArgs, moduleName, ...cacheArgs];
-            await executionService.exec(args, { throwOnStdErr: true });
-            return true;
-        } catch (ex) {
-            const message = `Failed to install '${moduleName}'${destinationMessage}, please install manually.`;
-            this.logger.error(message, ex);
-            this.shell.showErrorMessage(message);
-            return false;
-        }
+        const title = `Installing module ${moduleName}`;
+        const options = { location: ProgressLocation.Notification, title, cancellable: true };
+        return this.shell.withProgress<boolean>(options, (_, token) => new Promise(async resolve => {
+            const executionService = await this.pythonExecServieFactory.create({ resource: workspaceFolder });
+            const destinationMessage = targetDirectory ? ` into ${targetDirectory}` : '';
+            try {
+                this.logger.info(`Installing module '${moduleName}'${destinationMessage}`);
+                const installDirArgs = targetDirectory ? ['-t', targetDirectory.fileToCommandArgument()] : [];
+                const cacheArgs = targetDirectory ? ['--no-cache-dir'] : [];
+                const args = ['-m', 'pip', 'install', ...installDirArgs, moduleName, ...cacheArgs];
+                await executionService.exec(args, { throwOnStdErr: true, token });
+                resolve(true);
+            } catch (ex) {
+                const message = `Failed to install '${moduleName}'${destinationMessage}, please install manually.`;
+                this.logger.error(message, ex);
+                this.shell.showErrorMessage(message);
+                resolve(false);
+            }
+        }));
     }
 }
