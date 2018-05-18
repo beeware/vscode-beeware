@@ -46,7 +46,12 @@
         "onCommand:beeware.runMac",
         "onCommand:beeware.runLinux",
         "onCommand:beeware.runIOS",
-        "onCommand:beeware.runAndroid"
+        "onCommand:beeware.runAndroid",
+        "onCommand:beeware.debugWindows",
+        "onCommand:beeware.debugMac",
+        "onCommand:beeware.debugLinux",
+        "onCommand:beeware.debugIOS",
+        "onCommand:beeware.debugAndroid"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -105,8 +110,55 @@
                 "command": "beeware.runAndroid",
                 "title": "Run on Android",
                 "category": "BeeWare"
+            },
+            {
+                "command": "beeware.debugWindows",
+                "title": "Debug",
+                "category": "BeeWare"
+            },
+            {
+                "command": "beeware.debugMac",
+                "title": "Debug on Mac OS",
+                "category": "BeeWare"
+            },
+            {
+                "command": "beeware.debugLinux",
+                "title": "Debug on Linux",
+                "category": "BeeWare"
+            },
+            {
+                "command": "beeware.debugIOS",
+                "title": "Debug on iOS",
+                "category": "BeeWare"
+            },
+            {
+                "command": "beeware.debugAndroid",
+                "title": "Debug on Android",
+                "category": "BeeWare"
             }
-        ]
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Beeware Configuration",
+            "properties": {
+                "beeware.beewarePath": {
+                    "type": "string",
+                    "default": "beeware",
+                    "description": "Path to Beeware executable.",
+                    "scope": "resource"
+                },
+                "beeware.name": {
+                    "type": "string",
+                    "description": "App name defined in setup.py.",
+                    "scope": "resource"
+                },
+                "beeware.formalName": {
+                    "type": "string",
+                    "description": "Formal name defined in setup.py.",
+                    "scope": "resource"
+                }
+            }
+        }
     },
     "menus": {
         "commandPalette": [
@@ -119,11 +171,25 @@
                 "when": "beeware.isMac"
             },
             {
-                "command": "beeware.runLinux",
-                "when": "beeware.isLinux"
+                "command": "beeware.runLinux"
             },
             {
                 "command": "beeware.runIOS",
+                "when": "beeware.isMac"
+            },
+            {
+                "command": "beeware.debugWindows",
+                "when": "beeware.isWindows"
+            },
+            {
+                "command": "beeware.debugMac",
+                "when": "beeware.isMac"
+            },
+            {
+                "command": "beeware.debugLinux"
+            },
+            {
+                "command": "beeware.debugIOS",
                 "when": "beeware.isMac"
             }
         ]
@@ -139,6 +205,7 @@
         "@types/chai": "^4.1.3",
         "@types/chai-as-promised": "^7.1.0",
         "@types/fs-extra": "^5.0.2",
+        "@types/get-port": "^3.2.0",
         "@types/iconv-lite": "^0.0.1",
         "@types/istanbul": "^0.4.30",
         "@types/mocha": "^5.2.0",
@@ -157,6 +224,7 @@
     },
     "dependencies": {
         "fs-extra": "^6.0.1",
+        "get-port": "^3.2.0",
         "iconv-lite": "^0.4.23",
         "inversify": "^4.13.0",
         "reflect-metadata": "^0.1.12",

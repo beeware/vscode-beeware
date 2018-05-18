@@ -15,6 +15,7 @@ import { registerTypes as processRegisterTypes } from './common/process/serviceR
 import { registerTypes as commonRegisterTypes } from './common/serviceRegistry';
 import { IDisposableRegistry, IOutputChannel } from './common/types';
 import { registerTypes as cookiecutterRegisterTypes } from './cookieCutter/serviceRegistry';
+import { registerTypes as debugRegisterTypes } from './debugger/serviceRegistry';
 import { ServiceContainer } from './ioc/container';
 import { ServiceManager } from './ioc/serviceManager';
 import { IServiceContainer } from './ioc/types';
@@ -47,6 +48,7 @@ function registerServices(context: ExtensionContext, serviceManager: ServiceMana
     templatesRegisterTypes(serviceManager);
     projectRegisterTypes(serviceManager);
     taskRegisterTypes(serviceManager);
+    debugRegisterTypes(serviceManager);
 }
 
 function initialize(serviceContainer: ServiceContainer) {
