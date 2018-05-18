@@ -69,7 +69,7 @@ export interface IPythonExecutionFactory {
 export const IPythonExecutionService = Symbol('IPythonExecutionService');
 
 export interface IPythonExecutionService {
-    isModuleInstalled(moduleName: string): Promise<boolean>;
+    isModuleInstalled(moduleName: string, env?: {}): Promise<boolean>;
     exec(args: string[], options: SpawnOptions): Promise<ExecutionResult>;
     execModule(moduleName: string, args: string[], options: SpawnOptions): Promise<ExecutionResult>;
 }
@@ -77,6 +77,6 @@ export interface IPythonExecutionService {
 export const IModuleInstaller = Symbol('IModuleInstaller');
 
 export interface IModuleInstaller {
-    isInstalled(moduleName: string, workspaceFolder: Uri): Promise<boolean>;
-    install(moduleName: string, workspaceFolder: Uri, targetDirectory?: string): Promise<boolean>;
+    isInstalled(moduleName: string, workspaceFolder: Uri, env?: {}): Promise<boolean>;
+    install(moduleName: string, workspaceFolder: Uri, targetDirectory?: string, customArgs?: string[]): Promise<boolean>;
 }

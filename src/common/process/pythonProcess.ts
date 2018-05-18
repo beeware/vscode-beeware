@@ -11,8 +11,8 @@ export class PythonExecutionService implements IPythonExecutionService {
 
     constructor(private readonly procService: IProcessService, private readonly pythonPath: string) {
     }
-    public async isModuleInstalled(moduleName: string): Promise<boolean> {
-        return this.procService.exec(this.pythonPath, ['-c', `import ${moduleName}`], { throwOnStdErr: true })
+    public async isModuleInstalled(moduleName: string, env?: {}): Promise<boolean> {
+        return this.procService.exec(this.pythonPath, ['-c', `import ${moduleName}`], { throwOnStdErr: true, env })
             .then(() => true).catch(() => false);
     }
 
