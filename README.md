@@ -14,6 +14,10 @@ Write your apps in Python and release them on iOS, Android, Windows, MacOS, Linu
 
 * Python
 
+## Roadmap
+
+* Debugging on Windows
+* Debugging Django, iOS, Android Apps
 
 ## Instructions
 
