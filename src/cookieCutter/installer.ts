@@ -23,10 +23,6 @@ export class Installer implements IInstaller {
         if (!await this.checkAndInstallModule('jinja2', workspaceFolder)) {
             return false;
         }
-        if (!await this.checkAndInstallModule('ptvsd', workspaceFolder, ['--pre'])) {
-            return false;
-        }
-
         return true;
     }
 
