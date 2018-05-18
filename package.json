@@ -68,7 +68,7 @@
             },
             {
                 "command": "beeware.buildMac",
-                "title": "Build for Mac OS",
+                "title": "Build for MacOS",
                 "category": "BeeWare"
             },
             {
@@ -93,7 +93,7 @@
             },
             {
                 "command": "beeware.runMac",
-                "title": "Run on Mac OS",
+                "title": "Run on MacOS",
                 "category": "BeeWare"
             },
             {
@@ -118,7 +118,7 @@
             },
             {
                 "command": "beeware.debugMac",
-                "title": "Debug on Mac OS",
+                "title": "Debug on MacOS",
                 "category": "BeeWare"
             },
             {
