@@ -2,7 +2,17 @@ export const IContextInitialization = Symbol('IContextInitialization');
 export interface IContextInitialization {
     initialize(): Promise<{}>;
 }
-export type Target = 'windows' | 'macos' | 'linux' | 'ios' | 'android';
+export enum Target {
+    windows = 'windows',
+    macOS = 'macOS',
+    linux = 'linux',
+    iOS = 'iOS',
+    android = 'android',
+    django = 'django',
+    tvOS = 'tvOS',
+    watchOS = 'watchOS'
+}
+
 export const ITaskProvider = Symbol('ITaskProvider');
 export interface ITaskProvider {
     build(target: Target): Promise<void>;
