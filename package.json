@@ -98,7 +98,7 @@
             },
             {
                 "command": "beeware.runLinux",
-                "title": "Run",
+                "title": "Run on Linux",
                 "category": "BeeWare"
             },
             {
@@ -113,7 +113,7 @@
             },
             {
                 "command": "beeware.debugWindows",
-                "title": "Debug",
+                "title": "Debug on Windows",
                 "category": "BeeWare"
             },
             {
