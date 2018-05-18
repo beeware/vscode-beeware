@@ -10,3 +10,4 @@ npm-debug.log
 !yarn.lock
 coverage/
 .vscode-test/**
+python_files/packages/**
