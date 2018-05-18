@@ -47,11 +47,13 @@ export class Debugger implements IDebugger {
         const PYTHONPATH = pythonPaths.join(path.delimiter);
         const module = startupInfo.module;
         const program = startupInfo.program;
+        const args = startupInfo.args;
         const debugConfig: DebugConfiguration = {
             name: `Debug ${ApplicationName} on ${target}`,
             request: 'launch',
             type: 'pythonExperimental',
             module,
+            args,
             program,
             cwd: startupInfo.cwd,
             env: {

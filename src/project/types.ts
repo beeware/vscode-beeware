@@ -8,6 +8,7 @@ export type StartupInfo = {
     PYTHONPATHs?: string[];
     program?: string;
     module?: string;
+    args?: string[];
 };
 export const IProjectService = Symbol('IProject');
 
