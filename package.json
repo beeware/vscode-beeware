@@ -82,7 +82,7 @@
                 "category": "BeeWare"
             },
             {
-                "command": "beeware.buildIOS",
+                "command": "beeware.buildAndroid",
                 "title": "Build for Android",
                 "category": "BeeWare"
             },
