@@ -20,9 +20,17 @@ export class BeeWareSettings extends EventEmitter implements IBeeWareSettings {
     private _beewarePath!: string;
     private _cookiecutterTemplateRepoUrl!: string;
     private _pythonPath!: string;
+    private _name?: string;
+    private _formalName?: string;
     private systemVariables!: SystemVariables;
     public get beewarePath() {
         return this._beewarePath;
+    }
+    public get name() {
+        return this._name;
+    }
+    public get formalName() {
+        return this._formalName;
     }
     public get cookiecutterTemplateRepoUrl() {
         return this._cookiecutterTemplateRepoUrl;
@@ -47,6 +55,8 @@ export class BeeWareSettings extends EventEmitter implements IBeeWareSettings {
     private initializeSettings() {
         const settings = workspace.getConfiguration('beeware', this.workspaceFolder);
         this._beewarePath = settings.get('beewarePath', BEEWARE_PATH);
+        this._name = settings.get('name', undefined);
+        this._formalName = settings.get('formalName', undefined);
         this._cookiecutterTemplateRepoUrl = settings.get('beewarePath', COOKIE_CUTTER_TEMPLATE_REPO_URL);
 
         const pythonSettings = workspace.getConfiguration('python', this.workspaceFolder);
