@@ -57,7 +57,7 @@ export class BeeWareSettings extends EventEmitter implements IBeeWareSettings {
         this._beewarePath = settings.get('beewarePath', BEEWARE_PATH);
         this._name = settings.get('name', undefined);
         this._formalName = settings.get('formalName', undefined);
-        this._cookiecutterTemplateRepoUrl = settings.get('beewarePath', COOKIE_CUTTER_TEMPLATE_REPO_URL);
+        this._cookiecutterTemplateRepoUrl = settings.get('cookiecutterTemplateRepoUrl', COOKIE_CUTTER_TEMPLATE_REPO_URL);
 
         const pythonSettings = workspace.getConfiguration('python', this.workspaceFolder);
         this._pythonPath = pythonSettings.get('pythonPath', 'python');
