@@ -16,7 +16,7 @@ export class StartupService implements IStartupService {
 
         const targetDirectory = this.serviceContainer.get<ITargetService>(ITargetService).getDirectory(target);
         const contentDirectory = path.join(workspaceFolder.fsPath, targetDirectory, 'content');
-        const cwd = path.join(contentDirectory, 'app');
+        const cwd = workspaceFolder.fsPath;
         const program = path.join(contentDirectory, 'app', 'start.py');
         const sourceRoot = path.join(contentDirectory, 'app');
 

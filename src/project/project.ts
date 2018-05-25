@@ -96,13 +96,13 @@ export class Project implements IProjectService {
     private async checkAndInstallModule(moduleName: string, workspaceFolder: Uri): Promise<boolean> {
         this.logger.info(`Checking if module '${moduleName}' is installed.`);
         const cookieCutterIsInstalled = await this.moduleInstaller.isInstalled(moduleName, workspaceFolder);
-        if (!cookieCutterIsInstalled) {
-            const result = await this.shell.showInformationMessage(`Module '${moduleName}' not installed, would you like to install it?`, 'Install', 'Cancel');
-            if (result !== 'Install') {
-                return false;
-            }
+        if (cookieCutterIsInstalled) {
+            return true;
         }
-
+        const result = await this.shell.showInformationMessage(`Module '${moduleName}' not installed, would you like to install it?`, 'Install', 'Cancel');
+        if (result !== 'Install') {
+            return false;
+        }
         if (!await this.moduleInstaller.install(moduleName, workspaceFolder)) {
             return false;
         }
