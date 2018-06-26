@@ -72,7 +72,7 @@ export class Project implements IProjectService {
                 const executionInfo = new BeeWareExecutionHelper().buildExecutionArgs(pythonPath, beewarePath);
 
                 const executionService = await this.processExecutionFactory.create(workspaceFolder);
-                const args = [...executionInfo.args, 'build', target];
+                const args = [...executionInfo.args, buildOrRumCmd, target];
                 const result = executionService.execObservable(executionInfo.command, args, { cwd: workspaceFolder.fsPath, token });
                 result.out.subscribe(output => {
                     if (output.source === 'stderr') {
