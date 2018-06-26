@@ -8,7 +8,7 @@ if ((Reflect as any).metadata === undefined) {
 }
 
 import { Container } from 'inversify';
-import { Disposable, ExtensionContext, OutputChannel, window } from 'vscode';
+import { debug, Disposable, ExtensionContext, OutputChannel, window } from 'vscode';
 import { ApplicationName } from './common/constants';
 import { registerTypes as platformRegisterTypes } from './common/platform/serviceRegistry';
 import { registerTypes as processRegisterTypes } from './common/process/serviceRegistry';
@@ -16,6 +16,7 @@ import { registerTypes as commonRegisterTypes } from './common/serviceRegistry';
 import { IDisposableRegistry, IOutputChannel } from './common/types';
 import { registerTypes as cookiecutterRegisterTypes } from './cookieCutter/serviceRegistry';
 import { registerTypes as debugRegisterTypes } from './debugger/serviceRegistry';
+import { IDebugConfigurationProvider } from './debugger/types';
 import { ServiceContainer } from './ioc/container';
 import { ServiceManager } from './ioc/serviceManager';
 import { IServiceContainer } from './ioc/types';
@@ -49,6 +50,9 @@ function registerServices(context: ExtensionContext, serviceManager: ServiceMana
     projectRegisterTypes(serviceManager);
     taskRegisterTypes(serviceManager);
     debugRegisterTypes(serviceManager);
+
+    const debugConfigProvider = serviceManager.get<IDebugConfigurationProvider>(IDebugConfigurationProvider);
+    context.subscriptions.push(debug.registerDebugConfigurationProvider('beeware', debugConfigProvider));
 }
 
 function initialize(serviceContainer: ServiceContainer) {

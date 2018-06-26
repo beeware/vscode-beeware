@@ -18,10 +18,10 @@ export class Debugger implements IDebugger {
         this.logger = this.serviceContainer.get<ILogger>(ILogger);
         this.appShell = this.serviceContainer.get<IApplicationShell>(IApplicationShell);
     }
-    public async debug(workspaceFolderUri: Uri, target: Target): Promise<boolean> {
+    public async getDebugConfiguration(workspaceFolderUri: Uri, target: Target, build: boolean = false): Promise<DebugConfiguration | undefined> {
         const workspaceFolder = this.serviceContainer.get<IWorkspaceService>(IWorkspaceService).getWorkspaceFolder(workspaceFolderUri);
         if (!workspaceFolder) {
-            return false;
+            return;
         }
 
         const project = this.serviceContainer.get<IProjectService>(IProjectService);
@@ -31,14 +31,16 @@ export class Debugger implements IDebugger {
         } catch (ex) {
             this.logger.error('Failed to get app name and formal name', ex);
             this.appShell.showErrorMessage('Failed to retrieve the App name and formal name from setup.py. Please update settings.json with relevant info.');
-            return false;
+            return;
         }
         if (!startupInfo) {
-            return false;
+            return;
         }
 
-        // Always re-build before debugging.
-        await project.build(workspaceFolderUri, target).catch(noop);
+        if (build) {
+            // Always re-build before debugging.
+            await project.build(workspaceFolderUri, target).catch(noop);
+        }
 
         const pythonPaths = [path.join(ExtensionRootDirectory, 'python_files', 'packages')];
         if (Array.isArray(startupInfo.PYTHONPATHs)) {
@@ -47,7 +49,7 @@ export class Debugger implements IDebugger {
         const PYTHONPATH = pythonPaths.join(path.delimiter);
         const module = startupInfo.module;
         const program = startupInfo.program;
-        const debugConfig: DebugConfiguration = {
+        return {
             name: `Debug ${ApplicationName} on ${target}`,
             request: 'launch',
             type: 'pythonExperimental',
@@ -64,6 +66,17 @@ export class Debugger implements IDebugger {
                 }
             ]
         };
+    }
+    public async debug(workspaceFolderUri: Uri, target: Target): Promise<boolean> {
+        const workspaceFolder = this.serviceContainer.get<IWorkspaceService>(IWorkspaceService).getWorkspaceFolder(workspaceFolderUri);
+        if (!workspaceFolder) {
+            return false;
+        }
+
+        const debugConfig = await this.getDebugConfiguration(workspaceFolderUri, target);
+        if (!debugConfig) {
+            return false;
+        }
         return debug.startDebugging(workspaceFolder, debugConfig);
     }
 }

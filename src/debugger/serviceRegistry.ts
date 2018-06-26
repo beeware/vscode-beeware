@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 
 import { IServiceManager } from '../ioc/types';
+import { DebugConfigurationProvider } from './configProvider';
 import { Debugger } from './debugger';
-import { IDebugger } from './types';
+import { IDebugConfigurationProvider, IDebugger } from './types';
 
 export function registerTypes(serviceManager: IServiceManager) {
     serviceManager.addSingleton<IDebugger>(IDebugger, Debugger);
+    serviceManager.addSingleton<IDebugConfigurationProvider>(IDebugConfigurationProvider, DebugConfigurationProvider);
 }
