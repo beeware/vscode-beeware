@@ -25,7 +25,8 @@
     ],
     "keywords": [
         "python",
-        "beeware"
+        "beeware",
+        "debugger"
     ],
     "galleryBanner": {
         "color": "#F8D047",
@@ -55,6 +56,28 @@
     ],
     "main": "./out/src/extension",
     "contributes": {
+        "debuggers": [
+            {
+                "type": "beeware",
+                "label": "Beeware",
+                "languages": [
+                    "python"
+                ],
+                "program": "./out/debugger/main.js",
+                "runtime": "node",
+                "configurationSnippets": [
+                    {
+                        "label": "Debug Beeware",
+                        "description": "Debug Beeware",
+                        "body": {
+                            "name": "Denbug Beeware",
+                            "type": "beeware",
+                            "request": "launch"
+                        }
+                    }
+                ]
+            }
+        ],
         "commands": [
             {
                 "command": "beeware.createProject",

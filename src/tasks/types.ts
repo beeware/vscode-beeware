@@ -15,6 +15,7 @@ export enum Target {
 
 export const ITaskProvider = Symbol('ITaskProvider');
 export interface ITaskProvider {
+    getDefaultTarget(): Target;
     build(target: Target): Promise<void>;
     run(target: Target): Promise<void>;
 }
