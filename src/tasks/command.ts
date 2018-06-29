@@ -40,10 +40,10 @@ export class TaskCommands implements ITaskCommands {
         debugItems.forEach(item => this.commandManager.registerCommand(item.command, () => this.debug(item.target)));
     }
     public async build(target: Target): Promise<void> {
-        this.serviceContainer.get<ITaskProvider>(ITaskProvider).build(target);
+        this.serviceContainer.get<ITaskProvider>(ITaskProvider).build(target, true);
     }
     public async run(target: Target): Promise<void> {
-        this.serviceContainer.get<ITaskProvider>(ITaskProvider).run(target);
+        this.serviceContainer.get<ITaskProvider>(ITaskProvider).run(target, true);
     }
     public async debug(target: Target): Promise<void> {
         const workspaceFolder = await this.serviceContainer.get<IWorkspaceService>(IWorkspaceService).selectWorkspaceFolder();

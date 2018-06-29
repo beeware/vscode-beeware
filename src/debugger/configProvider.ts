@@ -13,7 +13,7 @@ import { IDebugConfigurationProvider, IDebugger } from './types';
 @injectable()
 export class DebugConfigurationProvider implements IDebugConfigurationProvider {
     constructor(@inject(IServiceContainer) private readonly serviceContainer: IServiceContainer) { }
-    public async provideDebugConfigurations?(folder: WorkspaceFolder | undefined, _token?: CancellationToken): Promise<DebugConfiguration[]> {
+    public async provideDebugConfigurations(_folder: WorkspaceFolder | undefined, _token?: CancellationToken): Promise<DebugConfiguration[]> {
         return [
             {
                 name: 'Debug BeeWare',

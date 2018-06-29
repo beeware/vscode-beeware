@@ -26,18 +26,18 @@ export class BulidRunTaskProvider implements ITaskProvider {
             throw new Error('Unable to determine default build target');
         }
     }
-    public async build(target: Target): Promise<void> {
+    public async build(target: Target, runInTerminal: boolean = false): Promise<void> {
         const workspaceFolder = await this.workspaceService.selectWorkspaceFolder();
         if (!workspaceFolder) {
             return;
         }
-        this.project.build(workspaceFolder.uri, target).ignoreErrors();
+        this.project.build(workspaceFolder.uri, target, runInTerminal).ignoreErrors();
     }
-    public async run(target: Target): Promise<void> {
+    public async run(target: Target, runInTerminal: boolean = false): Promise<void> {
         const workspaceFolder = await this.workspaceService.selectWorkspaceFolder();
         if (!workspaceFolder) {
             return;
         }
-        this.project.run(workspaceFolder.uri, target).ignoreErrors();
+        this.project.run(workspaceFolder.uri, target, runInTerminal).ignoreErrors();
     }
 }

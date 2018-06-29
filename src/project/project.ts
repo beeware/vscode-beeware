@@ -5,6 +5,7 @@ import { IApplicationShell } from '../common/application/types';
 import { IConfigurationService } from '../common/configuration/types';
 import { ApplicationName } from '../common/constants';
 import { IModuleInstaller, IProcessServiceFactory } from '../common/process/types';
+import { ITerminalServiceFactory } from '../common/terminal/types';
 import { ILogger, IOutputChannel } from '../common/types';
 import { ICookiecutter } from '../cookieCutter/types';
 import { IServiceContainer } from '../ioc/types';
@@ -45,13 +46,13 @@ export class Project implements IProjectService {
         }
         return service.getStarupInfo(workspaceFolder, target);
     }
-    public async build(workspaceFolder: Uri, target: Target): Promise<void> {
-        return this.buildOrRun(workspaceFolder, target, 'build');
+    public async build(workspaceFolder: Uri, target: Target, runInTerminal: boolean = false): Promise<void> {
+        return this.buildOrRun(workspaceFolder, target, 'build', runInTerminal);
     }
-    public async run(workspaceFolder: Uri, target: Target): Promise<void> {
-        return this.buildOrRun(workspaceFolder, target, 'run');
+    public async run(workspaceFolder: Uri, target: Target, runInTerminal: boolean = false): Promise<void> {
+        return this.buildOrRun(workspaceFolder, target, 'run', runInTerminal);
     }
-    public async buildOrRun(workspaceFolder: Uri, target: Target, buildOrRumCmd: 'build' | 'run'): Promise<void> {
+    public async buildOrRun(workspaceFolder: Uri, target: Target, buildOrRumCmd: 'build' | 'run', runInTerminal: boolean = false): Promise<void> {
         if (!await this.checkAndInstallModule('beeware', workspaceFolder)) {
             return;
         }
@@ -65,14 +66,20 @@ export class Project implements IProjectService {
 
         const options = { location: ProgressLocation.Notification, title, cancellable: true };
         const logger = this.serviceContainer.get<ILogger>(ILogger);
+
+        const pythonPath = this.configurationService.getSettings(workspaceFolder).pythonPath;
+        const beewarePath = this.configurationService.getSettings(workspaceFolder).beewarePath;
+        const executionInfo = new BeeWareExecutionHelper().buildExecutionArgs(pythonPath, beewarePath);
+
+        const executionService = await this.processExecutionFactory.create(workspaceFolder);
+        const args = [...executionInfo.args, buildOrRumCmd, target];
+        if (runInTerminal) {
+            const factory = this.serviceContainer.get<ITerminalServiceFactory>(ITerminalServiceFactory);
+            const terminalService = factory.getTerminalService(workspaceFolder, 'Beeware');
+            await terminalService.sendCommand(executionInfo.command, args);
+        }
         return this.shell.withProgress<void>(options, (_, token) => new Promise(async (resolve, reject) => {
             try {
-                const pythonPath = this.configurationService.getSettings(workspaceFolder).pythonPath;
-                const beewarePath = this.configurationService.getSettings(workspaceFolder).beewarePath;
-                const executionInfo = new BeeWareExecutionHelper().buildExecutionArgs(pythonPath, beewarePath);
-
-                const executionService = await this.processExecutionFactory.create(workspaceFolder);
-                const args = [...executionInfo.args, buildOrRumCmd, target];
                 const result = executionService.execObservable(executionInfo.command, args, { cwd: workspaceFolder.fsPath, token });
                 result.out.subscribe(output => {
                     if (output.source === 'stderr') {

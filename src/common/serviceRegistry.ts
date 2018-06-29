@@ -13,6 +13,9 @@ import { IConfigurationService } from './configuration/types';
 import { Logger } from './logger';
 import { CurrentProcess } from './process/currentProcess';
 import { ICurrentProcess } from './process/types';
+import { TerminalServiceFactory } from './terminal/factory';
+import { TerminalHelper } from './terminal/helper';
+import { ITerminalHelper, ITerminalServiceFactory } from './terminal/types';
 import { ILogger } from './types';
 
 export function registerTypes(serviceManager: IServiceManager) {
@@ -24,4 +27,6 @@ export function registerTypes(serviceManager: IServiceManager) {
     serviceManager.addSingleton<IWorkspaceService>(IWorkspaceService, WorkspaceService);
     serviceManager.addSingleton<IDocumentManager>(IDocumentManager, DocumentManager);
     serviceManager.addSingleton<ITerminalManager>(ITerminalManager, TerminalManager);
+    serviceManager.addSingleton<ITerminalServiceFactory>(ITerminalServiceFactory, TerminalServiceFactory);
+    serviceManager.addSingleton<ITerminalHelper>(ITerminalHelper, TerminalHelper);
 }
