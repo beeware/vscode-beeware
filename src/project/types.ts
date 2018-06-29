@@ -15,8 +15,8 @@ export interface IProjectService {
     create(workspaceFolder: Uri): Promise<void>;
     getProjectInfo(workspaceFolder: Uri): Promise<ProjectInfo | undefined>;
     getStartupInfo(workspaceFolder: Uri, target: Target): Promise<StartupInfo | undefined>;
-    build(workspaceFolder: Uri, target: Target): Promise<void>;
-    run(workspaceFolder: Uri, target: Target): Promise<void>;
+    build(workspaceFolder: Uri, target: Target, runInTerminal?: boolean): Promise<void>;
+    run(workspaceFolder: Uri, target: Target, runInTerminal?: boolean): Promise<void>;
 }
 
 export const IProjectCommand = Symbol('IProjectCommand');
