@@ -6,6 +6,7 @@ import { Disposable, Event, EventEmitter, Terminal } from 'vscode';
 import '../../common/extensions';
 import { IServiceContainer } from '../../ioc/types';
 import { ITerminalManager } from '../application/types';
+import { sleep } from '../core.utils';
 import { IDisposableRegistry } from '../types';
 import { ITerminalHelper, ITerminalService, TerminalShellType } from './types';
 
@@ -59,6 +60,8 @@ export class TerminalService implements ITerminalService, Disposable {
         await new Promise(resolve => setTimeout(resolve, 100));
 
         this.terminal!.show(preserveFocus);
+        // Wait for terminal to get activated by Python extension.
+        await sleep(500);
     }
     private terminalCloseHandler(terminal: Terminal) {
         if (terminal === this.terminal) {

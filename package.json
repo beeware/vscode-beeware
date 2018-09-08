@@ -70,7 +70,7 @@
                         "label": "Debug Beeware",
                         "description": "Debug Beeware",
                         "body": {
-                            "name": "Denbug Beeware",
+                            "name": "Debug Beeware",
                             "type": "beeware",
                             "request": "launch"
                         }

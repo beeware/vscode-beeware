@@ -100,7 +100,7 @@ export class Project implements IProjectService {
             }
         }));
     }
-    private async checkAndInstallModule(moduleName: string, workspaceFolder: Uri): Promise<boolean> {
+    public async checkAndInstallModule(moduleName: string, workspaceFolder: Uri): Promise<boolean> {
         this.logger.info(`Checking if module '${moduleName}' is installed.`);
         const cookieCutterIsInstalled = await this.moduleInstaller.isInstalled(moduleName, workspaceFolder);
         if (cookieCutterIsInstalled) {
