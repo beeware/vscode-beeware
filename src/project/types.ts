@@ -17,6 +17,8 @@ export interface IProjectService {
     getStartupInfo(workspaceFolder: Uri, target: Target): Promise<StartupInfo | undefined>;
     build(workspaceFolder: Uri, target: Target, runInTerminal?: boolean): Promise<void>;
     run(workspaceFolder: Uri, target: Target, runInTerminal?: boolean): Promise<void>;
+    // TODO: This method doesn't belong here.
+    checkAndInstallModule(moduleName: string, workspaceFolder: Uri): Promise<boolean>;
 }
 
 export const IProjectCommand = Symbol('IProjectCommand');

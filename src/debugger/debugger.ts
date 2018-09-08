@@ -39,7 +39,12 @@ export class Debugger implements IDebugger {
 
         if (build) {
             // Always re-build before debugging.
-            await project.build(workspaceFolderUri, target).catch(noop);
+            // Always run in the terminal, cuz when terminal is not activated, build fails.
+            await project.build(workspaceFolderUri, target, true).catch(noop);
+            const appShell = this.serviceContainer.get<IApplicationShell>(IApplicationShell);
+            const cmd = 'Re-launch Debugger';
+            await appShell.showInformationMessage('Please re-launch the debugger once the build has completed (remember not to re-build)');
+            return;
         }
 
         const pythonPaths = [path.join(ExtensionRootDirectory, 'python_files', 'packages')];
@@ -59,6 +64,7 @@ export class Debugger implements IDebugger {
             env: {
                 PYTHONPATH
             },
+            console: 'integratedTerminal',
             pathMappings: [
                 {
                     localRoot: workspaceFolderUri.fsPath,
@@ -70,6 +76,10 @@ export class Debugger implements IDebugger {
     public async debug(workspaceFolderUri: Uri, target: Target): Promise<boolean> {
         const workspaceFolder = this.serviceContainer.get<IWorkspaceService>(IWorkspaceService).getWorkspaceFolder(workspaceFolderUri);
         if (!workspaceFolder) {
+            return false;
+        }
+        const projectServicec = this.serviceContainer.get<IProjectService>(IProjectService);
+        if (!await projectServicec.checkAndInstallModule('ptvsd', workspaceFolderUri)) {
             return false;
         }
 
