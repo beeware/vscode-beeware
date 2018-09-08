@@ -52,7 +52,7 @@ export class Debugger implements IDebugger {
         return {
             name: `Debug ${ApplicationName} on ${target}`,
             request: 'launch',
-            type: 'pythonExperimental',
+            type: 'python',
             module,
             program,
             cwd: startupInfo.cwd,
