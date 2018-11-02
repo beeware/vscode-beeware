@@ -6,7 +6,7 @@ Write your apps in Python and release them on iOS, Android, Windows, MacOS, Linu
 ## Features
 
 * Create a Project
-* Bulid a Project (for multiple targets)
+* Build a Project (for multiple targets)
 * Run a Project (for multiple targets)
 * Debug a Project (MacOS and Linux targets)
 
