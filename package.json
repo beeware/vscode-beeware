@@ -235,7 +235,7 @@
         "@types/node": "^10.0.8",
         "chai": "^4.1.2",
         "chai-as-promised": "^7.1.1",
-        "codecov": "^3.0.2",
+        "codecov": "^3.6.5",
         "mocha": "^5.1.1",
         "tslint": "^5.10.0",
         "tslint-eslint-rules": "^5.2.0",
